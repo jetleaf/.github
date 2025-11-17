@@ -65,12 +65,12 @@ JetLeaf aims to deliver a cohesive framework for building maintainable, testable
 ```dart
 import 'package:jetleaf/jetleaf.dart';
 
-@JetLeafApplication()
-class MyApplication {
-  static void main(List<String> args) {
-    JetApplication.run(MyApplication, args);
-  }
+void main(List<String> args) {
+  JetApplication.run(MyApplication, args);
 }
+
+@JetLeafApplication()
+class MyApplication {}
 ```
 
 2. Define services and repositories:
