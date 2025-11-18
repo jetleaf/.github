@@ -1,4 +1,4 @@
-![alt text](227047079.png)
+![alt text](logo.png)
 
 # JetLeaf Framework
 
