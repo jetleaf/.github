@@ -1,4 +1,4 @@
-![alt text](logo_sm.png)
+![alt text](logo_sms.png)
 
 # JetLeaf Framework
 
