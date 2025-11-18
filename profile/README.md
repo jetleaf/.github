@@ -1,4 +1,4 @@
-![alt text](logo.png)
+![alt text](logo_sm.png)
 
 # JetLeaf Framework
 
