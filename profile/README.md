@@ -98,7 +98,7 @@ For web apps, add controllers with `@RestController` and use `jetleaf_web` to st
 
 - REST API controllers: use `@RestController`, `@GetMapping`, `@PostMapping` and argument resolvers for `@PathVariable`, `@RequestParam`, and `@RequestBody`.
 - Scheduled tasks: `@Scheduled` annotations for cron/fixedDelay tasks.
-- Profile-based beans: `@Profile('dev')` / `@Profile('prod')` to conditionally enable configuration.
+- Profile-based pods: `@Profile('dev')` / `@Profile('prod')` to conditionally enable configuration.
 - Conditional pods: `@ConditionalOnProperty(...)` to enable features via config flags.
 
 ## Tooling and build
