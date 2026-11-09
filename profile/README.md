@@ -1,125 +1,237 @@
-![alt text](logo_sms.png)
+<div align="center">
 
-# JetLeaf Framework
+<img src="logo_sm.png" alt="Jetleaf Logo" width="180" />
 
-🍃 JetLeaf is an enterprise-grade, modular Dart backend framework that provides a full-featured foundation for building server-side applications, microservices, and web APIs. It combines a powerful IoC container, annotation-driven configuration, environment & profile management, web primitives, templating, code-generation tools, and a rich set of utility libraries.
+# Jetleaf Framework
 
-This repository contains the JetLeaf monorepo: core runtime modules, build tools, web server, template engine, utilities, and developer tooling used to bootstrap and operate JetLeaf-based applications.
+**Enterprise-grade, modular Dart backend framework bringing Inversion of Control, Actuator observability, and lightning-fast developer tooling to server-side Dart.**
 
-## What JetLeaf stands for
+[![pub package](https://img.shields.io/pub/v/jetleaf.svg?logo=dart&logoColor=white&color=0b2ab5)](https://pub.dev/packages/jetleaf)
+[![pure AOT](https://img.shields.io/badge/AOT-100%25%20mirror--free-success.svg)](https://pub.dev/packages/jetleaf)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![platform](https://img.shields.io/badge/platform-dart%20%7C%20server%20%7C%20cli%20%7C%20web%20%7C%20docker-lightgrey)](https://pub.dev/packages/jetleaf)
+[![Actuator](https://img.shields.io/badge/Actuator-production%20ready-brightgreen.svg)](https://pub.dev/packages/jetleaf_actuator)
 
-- Simplicity: clear, annotation-driven configuration and idiomatic Dart APIs.
-- Productivity: batteries-included features (DI, configuration, lifecycle, web, templates) so you can focus on business logic.
-- Extensibility: modular packages and code-generation tools to integrate with existing projects and tooling.
-- Robustness: lifecycle management, profile-aware configuration, conditional registration, and graceful shutdown.
+---
 
-## Goals and what it aims to achieve
+### The "Spring Boot for Dart" in the Full-Stack Flutter Era
 
-JetLeaf aims to deliver a cohesive framework for building maintainable, testable, and deployable backend services in Dart by:
+[Documentation](https://jetleaf.hapnium.com) • [Quick Start](#-quick-start) • [Architecture](#-architecture-overview) • [Ecosystem Packages](#-monorepo-ecosystem) • [Roadmap](#-upcoming-ecosystem-roadmap)
 
-- Providing a central application context & IoC container (pod system) for wiring components and lifecycle hooks.
-- Allowing environment- and profile-aware configuration across YAML/JSON/properties/Dart sources.
-- Offering web primitives (routing, content negotiation, converters, sessions) to implement services and REST APIs quickly.
-- Including a templates engine (JTL) for server-side rendering when needed.
-- Shipping build and dev tooling to scan, generate, and optimize runtime metadata for fast startup and streamlined builds.
+</div>
 
-## Key features (overview)
+---
 
-- Application bootstrap and lifecycle: `JetApplication`, context creation, refresh, graceful shutdown.
-- Dependency Injection: constructor/field/property injection, qualifiers, primary, lazy, scopes.
-- Configuration management: property sources, placeholders, typed binding, and profile activation.
-- Component scanning and stereotypes: `@Component`, `@Service`, `@Repository`, `@Controller`.
-- Conditional registration: `@ConditionalOnProperty`, `@ConditionalOnPod`, `@ConditionalOnMissingPod`.
-- Event system: publish/listen application events.
-- Web framework: declarative controllers, routing, message converters, exception handling, file uploads, sessions.
-- Templating: JTL template engine for HTML rendering with includes, loops, and conditionals.
-- Tooling: code generators and dev CLI (`jl`) for scanning, generating bootstrap code and builds.
+## 🍃 What is Jetleaf?
 
-## Repository layout (modules you’ll find here)
+**Jetleaf** is an enterprise-grade backend application framework for Dart. Inspired by modern application paradigms and Spring Boot, Jetleaf brings declarative Inversion of Control (IoC), constructor & property dependency injection, automatic component discovery, hierarchical environment profiles, production Actuator telemetry, and application lifecycle hooks to server-side Dart.
 
-- `jetleaf/` — Top-level package aggregating core exports and public entrypoint.
-- `jetleaf_core/` — Core runtime: application context, pod lifecycle, annotations, events.
-- `jetleaf_build/` — Build-time scanner and generator utilities.
-- `jetleaf_web/` — HTTP server and web framework primitives (controllers, routing, converters).
-- `jtl/` — Template engine (JetLeaf Template Language).
-- `jetleaf_lang/`, `jetleaf_utils/`, `jetleaf_env/` — Supporting libraries (language utilities, parsers, env & property resolution).
-- `jetleaf_devtool/` — Developer CLI and tooling (runtime inspection, `jl` command).
-- Other focused packages: `jetleaf_logging`, `jetleaf_security`, `jetleaf_validation`, `jetleaf_convert`, `jetleaf_pod`, `jetleaf_resource`, `jetleaf_retry`, `jetleaf_scheduling`, `jetleaf_test`, `jetson` (JSON), and more.
+Designed from the ground up for **pure Ahead-of-Time (AOT) compilation (`dart compile exe`)**, Jetleaf uses static AST scanning and zero-reflection registries — delivering enterprise developer productivity with blazing-fast native startup times and zero `dart:mirrors` overhead.
 
-(See each package for detailed docs and package-level README files.)
+### The Full-Stack Dart Vision
+Over 2 million developers build frontend mobile, web, and desktop apps with Flutter. Jetleaf bridges the divide by offering a unified backend experience:
+* **Zero Context Switching**: Write frontend and backend in the same expressive language.
+* **Shared Type Contracts**: Share models, validation rules, and DTOs across Flutter and Jetleaf without serialization drift.
+* **Enterprise Ergonomics**: Enjoy dependency injection, declarative controllers, and production monitoring without leaving Dart.
 
-## Architecture (high level)
+---
 
-1. Application Bootstrap: `JetApplication` creates a bootstrap context, registers property sources, activates profiles and runs context initializers.
-2. Component Discovery: runtime scanning (dev or build-time) discovers annotated classes and factory pods. Code generation via `jetleaf_build` can produce optimized declaration files.
-3. Configuration & Environment: `jetleaf_env` resolves property sources (YAML, properties, environment variables, CLI args) and supports profile-specific overrides.
-4. Pod Lifecycle & DI: `jetleaf_core` manages pod creation, dependency injection (constructor/field), `@PostConstruct`/`@PreDestroy`, lazy initialization, and ordering.
-5. Web Layer: `jetleaf_web` dispatches HTTP requests to annotated controllers, performs content negotiation and uses message converters for (de)serialization.
-6. Templates & Rendering: `jtl` renders server-side templates when building HTML responses.
-7. Tooling: `jetleaf_devtool` and `jetleaf_build` provide CLI commands and generators to improve startup and deployment.
+## ✨ Key Capabilities
 
-## Quick start (very small example)
+* **🚀 Declarative Application Bootstrap** — Boot clean microservices with `JetleafApplication.run()`, supporting banner art, PID management, environment resolution, and graceful shutdown signal handling (`SIGINT`, `SIGTERM`).
+* **💉 Inversion of Control (IoC) & Pods** — Complete container lifecycle managing singleton and prototype pods, eager and lazy initialization (`@Lazy`), primary candidates (`@Primary`), and priority ordering (`@Order`).
+* **⚡ 100% Mirror-Free AOT Compilation** — Static AST analysis synthesizes deterministic constructor and method invocation tables at build time, completely eliminating `dart:mirrors` and surviving Dart's aggressive tree-shaker.
+* **📊 Production Observability (`jetleaf_actuator`)** — Built-in telemetry modeled after Spring Actuator. Exposes `/actuator/health`, `/actuator/metrics`, `/actuator/info`, system telemetry, isolate memory allocations, and thread diagnostics.
+* **🌐 Declarative Web MVC (`jetleaf_web`)** — Annotation-driven REST routing with `@RestController`, `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@PathVariable`, `@RequestParam`, `@RequestBody`, and `ResponseEntity`.
+* **🏎️ Sub-Second Developer Velocity (`jetleaf_tools`)** — High-performance resident compiler CLI (`jl dev`, `jl run`, `jl test`) featuring pre-warmed isolates, AST watching, and sub-100ms hot reload cycles.
+* **⚙️ Hierarchical Configuration & Profiles** — Type-safe property binding (`@ConfigurationProperties`), `@Value` expression resolution, and cascade loading across command-line flags, environment variables, `.properties`, `.yaml`, and `.json`.
+* **🛡️ Fault Tolerance & Enterprise Validation** — Declarative retry policies with exponential backoff (`jetleaf_retry`) and Hibernate-style constraint validation (`jetleaf_validation`).
+* **🤖 AI-Native & Vibecoding Ready** — Strict typing and Model Context Protocol (`jetleaf_mcp`) integration enable AI agents (Cursor, Claude Desktop, Antigravity) to scaffold and self-heal production servers autonomously.
 
-1. Create an application entrypoint:
+---
+
+## 🚀 Quick Start
+
+### 1. Installation
+
+Add `jetleaf` and its core modules to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  jetleaf: ^2.0.0
+  jetleaf_core: ^2.0.1
+  jetleaf_web: ^2.0.0
+  jetleaf_actuator: ^1.0.0
+
+dev_dependencies:
+  jetleaf_tools: ^1.0.2
+```
+
+Or activate the `jl` CLI globally:
+
+```bash
+dart pub global activate jetleaf_tools
+```
+
+### 2. Write Your Application
+
+Create a complete REST application with dependency injection and Actuator metrics in `lib/main.dart`:
 
 ```dart
 import 'package:jetleaf/jetleaf.dart';
+import 'package:jetleaf_web/jetleaf_web.dart';
 
-void main(List<String> args) {
-  JetApplication.run(MyApplication, args);
-}
-
-@JetLeafApplication()
-class MyApplication {}
-```
-
-2. Define services and repositories:
-
-```dart
+// 1. Declare a business service pod
 @Service()
-class UserService {
-  final UserRepository repo;
-  UserService(this.repo);
+class GreeterService {
+  String greet(String name) => 'Welcome to Jetleaf, $name! 🍃';
 }
 
-@Repository()
-class UserRepository {}
+// 2. Declare a REST Controller
+@RestController()
+@RequestMapping('/api/v1')
+class HelloController {
+  final GreeterService _greeterService;
+
+  // Constructor dependency injection
+  HelloController(this._greeterService);
+
+  @GetMapping('/hello')
+  ResponseEntity<Map<String, String>> sayHello(
+    @RequestParam('name', defaultValue: 'Developer') String name,
+  ) {
+    return ResponseEntity.ok({
+      'message': _greeterService.greet(name),
+      'timestamp': DateTime.now().toIso8601String(),
+    });
+  }
+}
+
+// 3. Mark the application entrypoint
+@JetleafApplicationStarter()
+class ExampleApp {
+  // Application bootstrap hooks can be placed here
+}
+
+void main(List<String> args) async {
+  await JetleafApplication.run(ExampleApp(), args);
+}
 ```
 
-3. Run the app:
+### 3. Run with Hot Reload
+
+Start the resident JetleafVM daemon:
 
 ```bash
-# dart run lib/main.dart
+jl dev
 ```
 
-For web apps, add controllers with `@RestController` and use `jetleaf_web` to start the HTTP server.
+* Hit your endpoint: `http://localhost:8080/api/v1/hello?name=Flutter`
+* Inspect health telemetry: `http://localhost:8080/actuator/health`
+* Inspect memory & metrics: `http://localhost:8080/actuator/metrics`
 
-## Examples & recipes
+Edit any file and save — Jetleaf hot-reloads the changes in milliseconds!
 
-- REST API controllers: use `@RestController`, `@GetMapping`, `@PostMapping` and argument resolvers for `@PathVariable`, `@RequestParam`, and `@RequestBody`.
-- Scheduled tasks: `@Scheduled` annotations for cron/fixedDelay tasks.
-- Profile-based pods: `@Profile('dev')` / `@Profile('prod')` to conditionally enable configuration.
-- Conditional pods: `@ConditionalOnProperty(...)` to enable features via config flags.
+---
 
-## Tooling and build
+## 🏛️ Architecture Overview
 
-- `jetleaf_build` provides scanners and generators to produce runtime declaration files and speed up startup.
-- `jetleaf_devtool` includes the `jl` CLI to run dev server, generate assets, and build release artifacts.
+Jetleaf uses a cleanly layered, modular architecture with strict separation of concerns:
 
-## Contributing
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        DEVELOPER & AI TOOLING                          │
+│         `jl dev` Resident VM • `jetleaf_mcp` Agent Protocols           │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                       JETLEAF WEB & ACTUATOR                           │
+│     @RestController • Content Negotiation • /actuator Telemetry        │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        JETLEAF CORE (IoC)                              │
+│       Typed Pods • Dependency Injection • Lifecycle • Profiles        │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                     PURE AOT COMPILATION ENGINE                        │
+│          Zero `dart:mirrors` • Static AST • `dart compile exe`         │
+└────────────────────────────────────────────────────────────────────────┘
+```
 
-Please see the package READMEs and `CONTRIBUTING.md` files in each module for contribution guidelines. Typical flow:
+---
 
-1. Fork the repo and create a feature branch.
-2. Add/adjust tests under the package’s `test/` directory.
-3. Run `dart test` for the affected package and ensure lints pass.
-4. Open a PR with a clear description and reference to issues.
+## 📦 Monorepo Ecosystem
 
-## Where to find more documentation
+This repository is organized as a unified monorepo:
 
-- Package-level READMEs (see the module directories) contain detailed usage and API references.
-- Documentation site (if available) — links in package READMEs reference `https://jetleaf.hapnium.com`.
+| Package | Version | Description |
+|:---|:---:|:---|
+| **[`jetleaf`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf)** | `2.0.0` | Top-level application aggregator, bootstrap coordinator, and runner. |
+| **[`jetleaf_core`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/libraries/jetleaf_core)** | `2.0.1` | Core IoC container, Pod definitions, lifecycle processors, and environment management. |
+| **[`jetleaf_tools`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/libraries/jetleaf_tools)** | `1.0.2` | Resident compiler CLI (`jl`), `JetleafVM` isolate manager, and AST scanner. |
+| **[`jetleaf_actuator`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_actuator)** | `1.0.0` | Production monitoring and telemetry endpoints (`/actuator/health`, `/metrics`, `/info`). |
+| **[`jetleaf_web`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_web)** | `2.0.0` | Enterprise Web MVC, REST controllers, parameter resolvers, and HTTP servers. |
+| **[`jetleaf_retry`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_retry)** | `1.0.0` | Declarative retries, exponential backoffs, and circuit-breaker patterns (`@Retryable`). |
+| **[`jetleaf_validation`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_validation)** | `1.0.0` | Declarative validation constraints (`@Valid`, `@NotNull`, `@Size`, `@Email`). |
+| **[`jetson`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetson)** | `2.0.1` | High-performance JSON serialization engine and schema mapping utilities. |
+| **[`jtl`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jtl)** | `2.0.0` | Jetleaf Template Language for server-side HTML rendering. |
 
-## License
+---
 
-See the repository `LICENSE` file for license terms.
+## 🗺️ Upcoming Ecosystem Roadmap
+
+Jetleaf is expanding into a comprehensive enterprise application suite:
+
+* 🗄️ **`jetleaf_data`** *(Spring Data for Dart)*: Declarative `Repository<T, ID>`, dynamic method query derivation (`findByEmail`), unified SQL (Postgres, MySQL, SQLite) and NoSQL (MongoDB, Redis) dialects, connection pooling, and `@Transactional` zone-scoped rollback management.
+* 🔒 **`jetleaf_security`** *(Spring Security for Dart)*: Declarative `SecurityFilterChain` pipeline, CORS, CSRF, rate-limiting, stateless asymmetric/symmetric JWT engine, OAuth2/OIDC resource servers, and `@PreAuthorize` method security.
+* 🤖 **`jetleaf_mcp`** *(Model Context Protocol Server)*: Exposing project scaffolding, AST inspection, route tables, and warm-VM test runners directly to AI agents (Cursor, Windsurf, Claude Desktop, Antigravity) for autonomous vibecoding.
+* 🎨 **Jetleaf Studio / Builder**: Visual schema design and API scaffolding web platform located under `builder/`.
+* 📢 **Jetleaf Marketing Engine**: 24/7 automated developer advocacy pipeline via GitHub Actions located under `marketing/`.
+
+*(See detailed architectural specifications in [`jetleaf/roadmap/`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/roadmap/)).*
+
+---
+
+## 🛠️ The `jl` Developer CLI
+
+The `jetleaf_tools` CLI provides first-class developer tooling:
+
+```bash
+# Start resident dev manager with hot reload and isolate pre-warming
+jl dev
+
+# Run application in pre-warmed VM
+jl run lib/main.dart
+
+# Run discovered @JetleafTest test suites in pre-warmed VM
+jl test --all
+
+# Create a new Jetleaf project from starter templates
+jl create my_microservice
+
+# Build an optimized, native Ahead-of-Time executable
+jl build --release
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the Dart and Flutter community!
+
+1. Fork the repository and create your feature branch: `git checkout -b feature/amazing-feature`.
+2. Ensure all tests pass across packages: `dart test`.
+3. Verify that analysis reports zero warnings: `dart analyze`.
+4. Open a Pull Request with a clear summary of your changes.
+
+---
+
+## 📄 License
+
+Jetleaf is licensed under the [MIT License](LICENSE).
+Built with ❤️ by [Hapnium](https://hapnium.com) and the Jetleaf Contributors.
