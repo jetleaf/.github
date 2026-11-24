@@ -7,7 +7,7 @@
 **Enterprise-grade, modular Dart backend framework bringing Inversion of Control, Actuator observability, and lightning-fast developer tooling to server-side Dart.**
 
 [![pub package](https://img.shields.io/pub/v/jetleaf.svg?logo=dart&logoColor=white&color=0b2ab5)](https://pub.dev/packages/jetleaf)
-[![pure AOT](https://img.shields.io/badge/AOT-100%25%20mirror--free-success.svg)](https://pub.dev/packages/jetleaf)
+[![pure AOT](https://img.shields.io/badge/AOT-100%25%20reflection--free-success.svg)](https://pub.dev/packages/jetleaf)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/platform-dart%20%7C%20server%20%7C%20cli%20%7C%20web%20%7C%20docker-lightgrey)](https://pub.dev/packages/jetleaf)
 [![Actuator](https://img.shields.io/badge/Actuator-production%20ready-brightgreen.svg)](https://pub.dev/packages/jetleaf_actuator)
@@ -26,7 +26,7 @@
 
 **Jetleaf** is an enterprise-grade backend application framework for Dart. Inspired by modern application paradigms and Spring Boot, Jetleaf brings declarative Inversion of Control (IoC), constructor & property dependency injection, automatic component discovery, hierarchical environment profiles, production Actuator telemetry, and application lifecycle hooks to server-side Dart.
 
-Designed from the ground up for **pure Ahead-of-Time (AOT) compilation (`dart compile exe`)**, Jetleaf uses static AST scanning and zero-reflection registries — delivering enterprise developer productivity with blazing-fast native startup times and zero `dart:mirrors` overhead.
+Designed from the ground up for **pure Ahead-of-Time (AOT) compilation (`dart compile exe`)**, Jetleaf uses static AST scanning and zero-reflection registries — delivering enterprise developer productivity with blazing-fast native startup times and zero runtime reflection overhead.
 
 ### The Full-Stack Dart Vision
 Over 2 million developers build frontend mobile, web, and desktop apps with Flutter. Jetleaf bridges the divide by offering a unified backend experience:
@@ -40,7 +40,7 @@ Over 2 million developers build frontend mobile, web, and desktop apps with Flut
 
 * **🚀 Declarative Application Bootstrap** — Boot clean microservices with `JetleafApplication.run()`, supporting banner art, PID management, environment resolution, and graceful shutdown signal handling (`SIGINT`, `SIGTERM`).
 * **💉 Inversion of Control (IoC) & Pods** — Complete container lifecycle managing singleton and prototype pods, eager and lazy initialization (`@Lazy`), primary candidates (`@Primary`), and priority ordering (`@Order`).
-* **⚡ 100% Mirror-Free AOT Compilation** — Static AST analysis synthesizes deterministic constructor and method invocation tables at build time, completely eliminating `dart:mirrors` and surviving Dart's aggressive tree-shaker.
+* **⚡ 100% AOT Compilation** — Static AST analysis synthesizes deterministic constructor and method invocation tables at build time, completely eliminating runtime reflection and surviving Dart's aggressive tree-shaker.
 * **📊 Production Observability (`jetleaf_actuator`)** — Built-in telemetry modeled after Spring Actuator. Exposes `/actuator/health`, `/actuator/metrics`, `/actuator/info`, system telemetry, isolate memory allocations, and thread diagnostics.
 * **🌐 Declarative Web MVC (`jetleaf_web`)** — Annotation-driven REST routing with `@RestController`, `@RequestMapping`, `@GetMapping`, `@PostMapping`, `@PathVariable`, `@RequestParam`, `@RequestBody`, and `ResponseEntity`.
 * **🏎️ Sub-Second Developer Velocity (`jetleaf_tools`)** — High-performance resident compiler CLI (`jl dev`, `jl run`, `jl test`) featuring pre-warmed isolates, AST watching, and sub-100ms hot reload cycles.
@@ -58,13 +58,13 @@ Add `jetleaf` and its core modules to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  jetleaf: ^2.0.0
-  jetleaf_core: ^2.0.1
-  jetleaf_web: ^2.0.0
-  jetleaf_actuator: ^1.0.0
+  jetleaf: ^2.1.0
+  jetleaf_core: ^2.1.0
+  jetleaf_web: ^2.1.0
+  jetleaf_actuator: ^1.1.0
 
 dev_dependencies:
-  jetleaf_tools: ^1.0.2
+  jetleaf_tools: ^1.1.0
 ```
 
 Or activate the `jl` CLI globally:
@@ -159,7 +159,7 @@ Jetleaf uses a cleanly layered, modular architecture with strict separation of c
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                     PURE AOT COMPILATION ENGINE                        │
-│          Zero `dart:mirrors` • Static AST • `dart compile exe`         │
+│        Zero runtime reflection • Static AST • `dart compile exe`       │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -171,15 +171,17 @@ This repository is organized as a unified monorepo:
 
 | Package | Version | Description |
 |:---|:---:|:---|
-| **[`jetleaf`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf)** | `2.0.0` | Top-level application aggregator, bootstrap coordinator, and runner. |
-| **[`jetleaf_core`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/libraries/jetleaf_core)** | `2.0.1` | Core IoC container, Pod definitions, lifecycle processors, and environment management. |
-| **[`jetleaf_tools`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/libraries/jetleaf_tools)** | `1.0.2` | Resident compiler CLI (`jl`), `JetleafVM` isolate manager, and AST scanner. |
-| **[`jetleaf_actuator`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_actuator)** | `1.0.0` | Production monitoring and telemetry endpoints (`/actuator/health`, `/metrics`, `/info`). |
-| **[`jetleaf_web`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_web)** | `2.0.0` | Enterprise Web MVC, REST controllers, parameter resolvers, and HTTP servers. |
-| **[`jetleaf_retry`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_retry)** | `1.0.0` | Declarative retries, exponential backoffs, and circuit-breaker patterns (`@Retryable`). |
-| **[`jetleaf_validation`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetleaf_validation)** | `1.0.0` | Declarative validation constraints (`@Valid`, `@NotNull`, `@Size`, `@Email`). |
-| **[`jetson`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jetson)** | `2.0.1` | High-performance JSON serialization engine and schema mapping utilities. |
-| **[`jtl`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/packages/jtl)** | `2.0.0` | Jetleaf Template Language for server-side HTML rendering. |
+| **[`jetleaf`](https://pub.dev/packages/jetleaf)** | `2.1.0` | Top-level application aggregator, bootstrap coordinator, and runner. |
+| **[`jetleaf_core`](https://pub.dev/packages/jetleaf_core)** | `2.1.0` | Core IoC container, Pod definitions, lifecycle processors, and environment management. |
+| **[`jetleaf_tools`](https://pub.dev/packages/jetleaf_tools)** | `1.1.0` | Resident compiler CLI (`jl`), `JetleafVM` isolate manager, and AST scanner. |
+| **[`jetleaf_actuator`](https://pub.dev/packages/jetleaf_actuator)** | `1.1.0` | Production monitoring and telemetry endpoints (`/actuator/health`, `/metrics`, `/info`). |
+| **[`jetleaf_web`](https://pub.dev/packages/jetleaf_web)** | `2.1.0` | Enterprise Web MVC, REST controllers, parameter resolvers, and HTTP servers. |
+| **[`jetleaf_retry`](https://pub.dev/packages/jetleaf_retry)** | `2.1.0` | Declarative retries, exponential backoffs, and circuit-breaker patterns (`@Retryable`). |
+| **[`jetleaf_validation`](https://pub.dev/packages/jetleaf_validation)** | `2.1.0` | Declarative validation constraints (`@Valid`, `@NotNull`, `@Size`, `@Email`). |
+| **[`jetleaf_resource`](https://pub.dev/packages/jetleaf_resource)** | `2.1.0` | Resource caching, LRU/LFU eviction, TTL expiration, and rate limiting. |
+| **[`jetleaf_scheduling`](https://pub.dev/packages/jetleaf_scheduling)** | `2.1.0` | Task scheduling and timed execution (`@Scheduled`, `@Cron`). |
+| **[`jetson`](https://pub.dev/packages/jetson)** | `2.1.0` | High-performance JSON serialization engine and schema mapping utilities. |
+| **[`jtl`](https://pub.dev/packages/jtl)** | `2.1.0` | Jetleaf Template Language for server-side HTML rendering. |
 
 ---
 
@@ -193,7 +195,7 @@ Jetleaf is expanding into a comprehensive enterprise application suite:
 * 🎨 **Jetleaf Studio / Builder**: Visual schema design and API scaffolding web platform located under `builder/`.
 * 📢 **Jetleaf Marketing Engine**: 24/7 automated developer advocacy pipeline via GitHub Actions located under `marketing/`.
 
-*(See detailed architectural specifications in [`jetleaf/roadmap/`](file:///Users/mac/Documents/Hapnium/Jetleaf/jetleaf/roadmap/)).*
+*(All upcoming packages on this roadmap are still in design — none of them are published to pub.dev yet.)*
 
 ---
 
